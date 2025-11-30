@@ -46,8 +46,8 @@ class TFIDFSystem:
         self.docs = sorted(self.docs)
 
 
-def main(corpus):
-    tfidf = TFIDFSystem(open(corpus))
+def main():
+    tfidf = TFIDFSystem(open("edos_labelled_data.csv"))
 
     for i, prompt in enumerate(tfidf.X_test):
         p_vector = {}
@@ -98,8 +98,4 @@ def main(corpus):
     
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument("CORPUS",
-                        help="Path to file with the corpus")
-    args = parser.parse_args()
-    main(args.CORPUS)
+    main()
