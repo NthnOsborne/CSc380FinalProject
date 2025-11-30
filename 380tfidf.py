@@ -47,7 +47,10 @@ class TFIDFSystem:
 
 
 def main():
-    tfidf = TFIDFSystem(open("edos_labelled_data.csv"))
+    tfidf = TFIDFSystem(open("preprocessed_edos_labelled_data.csv"))
+
+    correct = 0
+    total = len(tfidf.X_test)
 
     for i, prompt in enumerate(tfidf.X_test):
         p_vector = {}
@@ -92,10 +95,17 @@ def main():
         combined = scored + missing_tweets
         combined.sort(key=lambda x:(-x[1], x[0]))
         top_id, _ = combined[0]
-        label = tfidf.train_labels.get(top_id, "0")
-        label_str = "sexist" if label == "1" else "not sexist"
-        print(tfidf.test_ids[i], label_str)
-    
+        label = tfidf.train_labels.get(top_id, "not sexist")
+
+        true_label = tfidf.y_test[i]
+        if label == true_label:
+            correct += 1
+
+        print(tfidf.test_ids[i], label)
+
+    accuracy = correct / total if total > 0 else 0.0
+    print("Accuracy:", accuracy)
+
 
 if __name__ == '__main__':
     main()
