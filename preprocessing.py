@@ -21,7 +21,7 @@ def lemmatize_text(inp):
     lem_words = []
     for word in words:
         lem_words.append(lemmatizer.lemmatize(word))
-    return ','.join(lem_words)
+    return ' '.join(lem_words)
 
 data = pd.read_csv('edos_labelled_data.csv')
 
@@ -38,4 +38,4 @@ data['text'] = data['text'].apply(remove_stop_words)
 # Lemmatize
 data['text'] = data['text'].apply(lemmatize_text)
 
-print(data['text'])
+data.to_csv('preprocessed_edos_labelled_data.csv', index=False)
