@@ -1,7 +1,7 @@
 import csv
 import collections
 import math
-import argparse
+from sklearn.metrics import classification_report
 
 
 class TFIDFSystem:
@@ -49,6 +49,12 @@ class TFIDFSystem:
 def main():
     tfidf = TFIDFSystem(open("preprocessed_edos_labelled_data.csv"))
 
+    correct = 0
+    total = len(tfidf.X_test)
+
+    pred_labels = []
+    true_labels = []
+
     for i, prompt in enumerate(tfidf.X_test):
         p_vector = {}
         p_terms = prompt.lower().split()
@@ -92,10 +98,15 @@ def main():
         combined = scored + missing_tweets
         combined.sort(key=lambda x:(-x[1], x[0]))
         top_id, _ = combined[0]
-        label = tfidf.train_labels.get(top_id, "0")
-        label_str = "sexist" if label == "1" else "not sexist"
-        print(tfidf.test_ids[i], label_str)
-    
+        label = tfidf.train_labels.get(top_id, "not sexist")
+
+        true_label = tfidf.y_test[i]
+        pred_labels.append(label)
+        true_labels.append(true_label)
+
+        # print(tfidf.test_ids[i], label)
+
+    print(classification_report(true_labels, pred_labels))
 
 if __name__ == '__main__':
     main()
