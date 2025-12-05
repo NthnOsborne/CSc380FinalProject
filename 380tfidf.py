@@ -47,7 +47,7 @@ class TFIDFSystem:
 
 
 def main():
-    tfidf = TFIDFSystem(open("edos_labelled_data.csv"))
+    tfidf = TFIDFSystem(open("preprocessed_edos_labelled_data.csv"))
 
     for i, prompt in enumerate(tfidf.X_test):
         p_vector = {}
