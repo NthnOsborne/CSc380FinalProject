@@ -1,7 +1,7 @@
 import csv
 import collections
 import math
-import argparse
+from sklearn.metrics import classification_report
 
 
 class TFIDFSystem:
@@ -52,6 +52,9 @@ def main():
     correct = 0
     total = len(tfidf.X_test)
 
+    pred_labels = []
+    true_labels = []
+
     for i, prompt in enumerate(tfidf.X_test):
         p_vector = {}
         p_terms = prompt.lower().split()
@@ -98,14 +101,12 @@ def main():
         label = tfidf.train_labels.get(top_id, "not sexist")
 
         true_label = tfidf.y_test[i]
-        if label == true_label:
-            correct += 1
+        pred_labels.append(label)
+        true_labels.append(true_label)
 
-        print(tfidf.test_ids[i], label)
+        # print(tfidf.test_ids[i], label)
 
-    accuracy = correct / total if total > 0 else 0.0
-    print("Accuracy:", accuracy)
-
+    print(classification_report(true_labels, pred_labels))
 
 if __name__ == '__main__':
     main()
