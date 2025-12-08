@@ -25,13 +25,13 @@ y_test = y[test_mask]
 
 # tf-idf vectorization
 print("Encoding text with TF-IDF...")
-vectorizer = TfidfVectorizer(max_features=5000, ngram_range=(1,2), use_idf=True, sublinear_tf=True)
+vectorizer = TfidfVectorizer(max_features=10000, ngram_range=(1,2), use_idf=True, sublinear_tf=True, stop_words='english', min_df=2)
 
 X_train = vectorizer.fit_transform(X_train_tweets)
 X_test = vectorizer.transform(X_test_tweets)
 
 # LogisticRegression model
-classifier = LogisticRegression(max_iter=1000, C=1)
+classifier = LogisticRegression(max_iter=1000, C=1, solver='liblinear', class_weight={0: 1, 1: 4})
 tuned_model = TunedThresholdClassifierCV(estimator=classifier, scoring='f1_weighted')
 
 tuned_model.fit(X_train, y_train)
