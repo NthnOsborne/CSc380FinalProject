@@ -1,11 +1,11 @@
 import pandas as pd
+from sklearn import svm
 from sentence_transformers import SentenceTransformer, models
 from sklearn.preprocessing import LabelEncoder
-from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
 
 print("Loading data...")
-df = pd.read_csv("final_project\\edos_labelled_data.csv")  # Change path if needed
+df = pd.read_csv("preprocessed_edos_labelled_data.csv")  # Change path if needed
 
 encoder = LabelEncoder()
 y = encoder.fit_transform(df['label']) # 0 for not sexist, 1 for sexist
@@ -32,7 +32,9 @@ y = encoder.fit_transform(df['label'])
 y_train = y[train_tweets]
 y_test = y[test_tweets]
 
-classifier = LogisticRegression(max_iter=2000) # iterate much longer because bert vectors way larger
+weights = {0:5288/(5288-1565), 1:5288/1565}
+
+classifier = svm.SVC(kernel='linear', class_weight=weights)
 
 print("\nTraining classifier...")
 classifier.fit(X_train, y_train)
