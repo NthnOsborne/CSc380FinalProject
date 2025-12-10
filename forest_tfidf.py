@@ -1,8 +1,7 @@
 import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import LabelEncoder
-from sklearn.svm import LinearSVC
-from sklearn.model_selection import TunedThresholdClassifierCV
 from sklearn.metrics import classification_report
 
 print("Loading data...")
@@ -35,10 +34,8 @@ X_train = vectorizer.fit_transform(X_train_tweets)
 X_test = vectorizer.transform(X_test_tweets)
 
 # Support Vector Machine model
-classifier = LinearSVC(max_iter=1000, C=.1, loss='hinge')
-tuned_model = TunedThresholdClassifierCV(estimator=classifier, scoring='f1_weighted')
+classifier = RandomForestClassifier(random_state=0)
 
-tuned_model.fit(X_train, y_train)
-print(f"Best Threshold Found: {tuned_model.best_threshold_}")
-y_pred = tuned_model.predict(X_test)
+classifier.fit(X_train, y_train)
+y_pred = classifier.predict(X_test)
 print(classification_report(y_test, y_pred, target_names=encoder.classes_))
