@@ -5,7 +5,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
 
 print("Loading data...")
-df = pd.read_csv("final_project\\edos_labelled_data.csv")  # Change path if needed
+df = pd.read_csv("preprocessed_edos_labelled_data.csv")  # Change path if needed
 
 encoder = LabelEncoder()
 y = encoder.fit_transform(df['label']) # 0 for not sexist, 1 for sexist

@@ -6,7 +6,11 @@ from sklearn.model_selection import TunedThresholdClassifierCV
 from sklearn.metrics import classification_report
 
 print("Loading data...")
-df = pd.read_csv("final_project\\preprocessed_edos_labelled_data.csv")  # change path if needed
+df = pd.read_csv("preprocessed_edos_labelled_data.csv")  # change path if needed
+# Make sure text is a string and has no NaNs
+df['text'] = df['text'].fillna("")      # replace NaN with empty string
+df['text'] = df['text'].astype(str)     # force everything to be string
+
 
 encoder = LabelEncoder()
 y = encoder.fit_transform(df['label']) # 0 for not sexist, 1 for sexist
